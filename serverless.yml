@@ -1,0 +1,28 @@
+
+service: upload-binary
+
+plugins:
+  - serverless-plugin-custom-binary
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: ap-northeast-1
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: "arn:aws:s3:::from-api-gateway/*"
+  
+functions:
+  upload:
+    handler: handler.upload
+    events:
+      - http:
+          path: /upload
+          method: post
+          cors: true
+          private: false
+
+
